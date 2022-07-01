@@ -1,9 +1,13 @@
 #include "FileManager.h"
 
-std::vector<Complex<float>> fileManager::ReadFile(const std::string &fileName)
+fileManager::fileManager(const std::string &fileName):fileName(fileName)
+{
+
+}
+fileManager::~fileManager(){}
+std::vector<Complex<float>> fileManager::ReadFile()
 {
     std::ifstream file(fileName,std::ios::binary);
-    std::vector<float> buff;
     std::vector<Complex<float>> sig;
 
     if(!file.is_open())
@@ -12,21 +16,22 @@ std::vector<Complex<float>> fileManager::ReadFile(const std::string &fileName)
     }
     else
     {
-        float tmp;
-        for(size_t i=0;file.read((char*)&tmp,sizeof(tmp));i++)
-        {
-            buff.push_back(tmp);
-        }
+          file.seekg(0,file.end);
+          int lenght=file.tellg();
+          float * buff=new float [lenght];
 
-        for(size_t i=0;i<buff.size()-1;i++)
-        {
-            Complex<float> b(buff[i],buff[i+1]);
-            sig.push_back(b);
-        }
+          file.seekg(0,file.beg);
+          file.read((char *)buff,lenght);
+          for(size_t i=0;i<lenght-2;i+=2)
+          {
+              Complex<float> tmp(buff[i],buff[i+1]);
+              sig.push_back(tmp);
+          }
 
-
+          file.close();
+          delete [] buff;
     }
-    file.close();
+
 
     return sig;
 }
@@ -34,7 +39,6 @@ std::vector<Complex<float>> fileManager::ReadFile(const std::string &fileName)
 void fileManager::SaveSignal(const std::vector<Complex<float>>& savedSignal, const std::string& fileName)
 {
     std::ofstream file(fileName,std::ios::binary);
-    for(size_t i=0;file.write((char*)&savedSignal[i],sizeof(float));i++)
-    {}
+    file.write((char*)&savedSignal,savedSignal.size());
     file.close();
 }
