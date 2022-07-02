@@ -16,7 +16,7 @@ class Filter{
    private:
         TypeFilter type;
         std::vector<float> sig;
-        int windowSize;
+        const int windowSize;
 };
 
 #endif // FILTER_H
