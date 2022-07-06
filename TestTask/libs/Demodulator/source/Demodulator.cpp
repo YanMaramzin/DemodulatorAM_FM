@@ -1,26 +1,44 @@
 #include "Demodulator.h"
+#include <algorithm>
 
-demodulator::demodulator(const std::vector<Complex<float>> sig,Modulation s):sig(sig),mod(s)
+demodulator::demodulator(std::vector<Complex<float>> &sig):sig(sig)
 {}
-std::vector<float> demodulator::demodulate(){
+demodulator::~demodulator()
+{}
+std::vector<float> demodulator::demodulateAM(){
     std::vector<float> demodSignal;
-    if(mod==AM)
-    {
+
         for(size_t i=0;i<sig.size();i++)
-            demodSignal[i]=sig[i].abs();
+            demodSignal.push_back(sig[i].abs());
+        float max=*std::max_element(demodSignal.begin(),demodSignal.end());
+        for(size_t i=0;i<demodSignal.size();i++)
+        {
+            demodSignal[i]=demodSignal[i]/max;
+        }
 
-    }
-    else {
-         float A;
-         float B;
-         for(size_t i=0;i<sig.size()-1;i++)
-         {
-           A=sig[i+1].real()-sig[i].real();
-           B=sig[i+1].imag()-sig[i].imag();
-
-           demodSignal[i]=(B*sig[i].real()-A*sig[i].imag())/(sig[i].abs()*sig[i].abs());
-         }
-
-    }
         return demodSignal;
+}
+
+std::vector<float> demodulator::demodulateFM()
+{
+    std::vector<float> demodSignal;
+    float A,B,A1,B1,W;
+
+    for(size_t i=0;i<sig.size()-1;i++)
+    {
+
+      A=sig[i].real();
+      B=sig[i].imag();
+      A1=sig[i+1].real()-sig[i].real();
+      B1=sig[i+1].imag()-sig[i].imag();
+      if(A || B)
+        {
+          W=(B1*A-A1*B)/(pow(A,2)+pow(B,2));
+          demodSignal.push_back(W);
+        }
+      else
+      {
+          return demodSignal;
+      }
+    }
 }

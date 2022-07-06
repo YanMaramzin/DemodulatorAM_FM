@@ -10,11 +10,12 @@ enum Modulation{
 
 class demodulator{
     public:
-        demodulator(std::vector<Complex<float>> sig,Modulation s);
+        demodulator(std::vector<Complex<float>> &sig);
         ~demodulator();
-        std::vector<float> demodulate();
+        std::vector<float> demodulateAM();
+        std::vector<float> demodulateFM();
     private:
-        Modulation mod;
+        //Modulation mod;
         std::vector<Complex<float>> sig;
 };
 
