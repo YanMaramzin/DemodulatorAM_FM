@@ -5,13 +5,15 @@
 #include <string>
 #include <vector>
 
+
 class fileManager {
     public:
     fileManager(const std::string &fileName);
     ~fileManager();
 
     std::vector<Complex<float>> ReadFile();
-    void SaveSignal(const std::vector<Complex<float>>& savedSignal, const std::string& fileName);
+    void SaveSignal(const std::vector<float>& savedSignal, const std::string& fileName);
+    void SaveWAV(const std::vector<float>& savedSignal, const std::string& fileName, const int sampleRate,const int bitDepht);
 
     private:
     std::string fileName;
