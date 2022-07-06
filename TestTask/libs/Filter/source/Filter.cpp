@@ -7,6 +7,8 @@ Filter::~Filter()
 {
 
 }
+
+
 std::vector<float> Filter::filtration()
 {
       std::vector<float> fSig(sig.size(),0.0);
