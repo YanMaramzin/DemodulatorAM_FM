@@ -1,44 +1,45 @@
 #include "Demodulator.h"
 #include <algorithm>
+#include <numeric>
 
-demodulator::demodulator(std::vector<Complex<float>> &sig):sig(sig)
-{}
-demodulator::~demodulator()
-{}
-std::vector<float> demodulator::demodulateAM(){
-    std::vector<float> demodSignal;
+std::vector<float> DemodulatorAM::Demodulate (std::vector<Complex<float>> &in) {
 
-        for(size_t i=0;i<sig.size();i++)
-            demodSignal.push_back(sig[i].abs());
-        float max=*std::max_element(demodSignal.begin(),demodSignal.end());
-        for(size_t i=0;i<demodSignal.size();i++)
+        std::vector<float> demodSignal;
+        demodSignal.reserve(in.size());
+
+
+        for(size_t i=0;i<in.size();i++)
+           {
+            demodSignal.push_back(in[i].abs());
+           }
+
+        auto max=*std::max_element(demodSignal.begin(),demodSignal.end());
+        auto mean=std::accumulate(demodSignal.begin(),demodSignal.end(),0.0)/demodSignal.size();
+
+        for(size_t i=0;i<in.size();i++)
         {
-            demodSignal[i]=demodSignal[i]/max;
+            demodSignal[i]-=mean;
+            demodSignal[i]/=max;
         }
-
         return demodSignal;
 }
 
-std::vector<float> demodulator::demodulateFM()
-{
+
+std::vector<float> DemodulatorFM::Demodulate(std::vector<Complex<float>> &in){
     std::vector<float> demodSignal;
+    demodSignal.reserve(in.size());
     float A,B,A1,B1,W;
 
-    for(size_t i=0;i<sig.size()-1;i++)
-    {
-
-      A=sig[i].real();
-      B=sig[i].imag();
-      A1=sig[i+1].real()-sig[i].real();
-      B1=sig[i+1].imag()-sig[i].imag();
-      if(A || B)
+        for(size_t i=0;i<in.size()-1;i++)
         {
+
+          A=in[i].real();
+          B=in[i].imag();
+          A1=in[i+1].real()-in[i].real();
+          B1=in[i+1].imag()-in[i].imag();
           W=(B1*A-A1*B)/(pow(A,2)+pow(B,2));
           demodSignal.push_back(W);
         }
-      else
-      {
-          return demodSignal;
-      }
-    }
+        return demodSignal;
 }
+

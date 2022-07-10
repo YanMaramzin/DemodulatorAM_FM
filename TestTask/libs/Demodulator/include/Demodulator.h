@@ -2,21 +2,36 @@
 #define DEMODULATOR_H
 
 #include "/media/sf_General/DemodulatorAM_FM/TestTask/libs/FileManager/include/FileManager.h"
+#include <memory>
 
-enum Modulation{
-    AM,
-    FM
+
+//enum class Modulation{
+//    AM,
+//    FM
+//};
+
+class Demodulator {
+public:
+    virtual std::vector<float> Demodulate(std::vector<Complex<float>> &in) = 0;
+
+//    class Factory {
+//    public:
+//        std::unique_ptr<Demodulator> Create(Modulation modulation);
+//    };
 };
 
-class demodulator{
+// TODO: class DemodulatorAM
+class DemodulatorAM: public Demodulator
+{
     public:
-        demodulator(std::vector<Complex<float>> &sig);
-        ~demodulator();
-        std::vector<float> demodulateAM();
-        std::vector<float> demodulateFM();
-    private:
-        //Modulation mod;
-        std::vector<Complex<float>> sig;
+        std::vector<float> Demodulate(std::vector<Complex<float>> &in) override;
 };
+// TODO: class DemodulatorFM
+class DemodulatorFM: public Demodulator
+{
+    public:
+        std::vector<float> Demodulate( std::vector<Complex<float>> &in) override;
+};
+
 
 #endif // DEMODULATOR_H
