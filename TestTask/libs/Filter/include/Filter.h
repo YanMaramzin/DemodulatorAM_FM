@@ -3,20 +3,22 @@
 
 #include <vector>
 
-enum TypeFilter{
-    REC,
-    NONREC
-};
 
 class Filter{
    public:
-        Filter(std::vector<float> s,TypeFilter type,int windowSize);
-        ~Filter();
-        std::vector<float> filtration();
-   private:
-        TypeFilter type;
-        std::vector<float> sig;
-        const int windowSize;
+        virtual std::vector<float> filtration(std::vector<float> &in,int windowSize)=0;
 };
+
+class FilterMovingAverageNonRec: public Filter{
+    public:
+        std::vector<float> filtration(std::vector<float> &in,int windowSize) override;
+};
+
+
+class FilterMovingAverageRec: public Filter{
+    public:
+        std::vector<float> filtration(std::vector<float> &in,int windowSize) override;
+};
+
 
 #endif // FILTER_H
