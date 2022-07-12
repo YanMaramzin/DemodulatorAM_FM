@@ -20,7 +20,7 @@ std::vector<float> FilterMovingAverageRec::filtration(std::vector<float> &in,int
 {
     std::vector<float> filtSig;
     filtSig.reserve(in.size());
-    filtSig.push_back(filtSig[0]);
+    filtSig.push_back(in[0]/windowSize);
     for(int i=1; i<in.size();i++)
     {
         if(i<windowSize)
