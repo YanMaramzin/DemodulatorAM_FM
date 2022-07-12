@@ -41,12 +41,8 @@ void FileManager::SaveWAV(const std::vector<float>& savedSignal, const std::stri
     auto maxAmplitude=pow(2,bitDepth-1)-1;
     for(size_t i=0;i<savedSignal.size();i++)
     {
-     if(savedSignal[i])
-     {
          int intSample=static_cast<int>(savedSignal[i]*maxAmplitude);
          writeToFile(file,intSample,2);
-     }
-
     }
     int postAudioPosition=file.tellp();
     writeToFile(file,postAudioPosition-preAudioPosition,4);

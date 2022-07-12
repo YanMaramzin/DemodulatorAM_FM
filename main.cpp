@@ -27,7 +27,9 @@ int main()
        int frequencyReduction=5;
        DemodulatorFM FM;
        std::vector<float> demodFM=FM.Demodulate(signalFM);
-       demodFM=downsample(demodFM,frequencyReduction);
+
+       Downsampler dw;
+       demodFM=dw.downsample(demodFM,frequencyReduction,20,fsFM);
        fileManager.SaveWAV(demodFM,"DemodFM.wav",fsFM/frequencyReduction,bitDepth);
 
        int windowSize=5;
