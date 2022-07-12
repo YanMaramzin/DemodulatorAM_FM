@@ -32,7 +32,6 @@ std::vector<float> DemodulatorFM::Demodulate(std::vector<Complex<float>> &in){
 
         for(size_t i=0;i<in.size()-1;i++)
         {
-
           A=in[i].real();
           B=in[i].imag();
           A1=in[i+1].real()-in[i].real();

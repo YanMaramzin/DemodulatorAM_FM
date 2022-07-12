@@ -11,7 +11,7 @@ void FileManager::SaveSignal(const std::vector<Complex<float>>& savedSignal, con
     file.close();
 }
 
-void writeToFile(std::ofstream &file,int value,int size){
+void FileManager::writeToFile(std::ofstream &file,int value,int size){
     file.write(reinterpret_cast<char*>(&value),size);
 }
 void FileManager::SaveWAV(const std::vector<float>& savedSignal, const std::string& fileName,const int sampleRate,const int bitDepth)

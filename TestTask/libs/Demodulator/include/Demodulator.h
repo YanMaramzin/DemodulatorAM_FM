@@ -1,7 +1,7 @@
 #ifndef DEMODULATOR_H
 #define DEMODULATOR_H
 
-#include "/media/sf_General/DemodulatorAM_FM/TestTask/libs/FileManager/include/FileManager.h"
+#include "../../FileManager/include/FileManager.h"
 #include <memory>
 
 

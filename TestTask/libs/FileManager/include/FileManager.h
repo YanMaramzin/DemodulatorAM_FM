@@ -5,9 +5,10 @@
 #include <string>
 #include <vector>
 
-
-
 class FileManager {
+
+    void writeToFile(std::ofstream &file,int value,int size);
+
     public:
     template<typename T>
     std::vector<Complex<float>> ReadFile(const std::string &fileName)
